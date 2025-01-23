@@ -6,7 +6,7 @@ Keeping track of household items, their condition, purchase dates, and maintenan
 
 ## **Database Schema**
 
-![QuickDBD-Free Diagram](https://github.com/user-attachments/assets/ffad2219-fcea-4358-82a6-9c3d8aff932c)
+![Image](https://github.com/user-attachments/assets/2e8055d5-a49f-47ea-a95b-d580c49e32ca)
 
 1. **Users** Table:
     
