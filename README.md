@@ -8,36 +8,69 @@ Keeping track of household items, their condition, purchase dates, and maintenan
 
 ![Image](https://github.com/user-attachments/assets/2e8055d5-a49f-47ea-a95b-d580c49e32ca)
 
-1. **Users** Table:
+1. **User** Table:
     
     - `id` (Primary Key)
-    - `username` (Unique)
+    - `username` (text)
     - `email` (Unique)
-    - `password_hash` (Encrypted)
+    - `password_hash` (text)
     - `email`(yeah)
-2. **Items** Table:
+2. **Groups** Table:
     
     - `id` (Primary Key)
-    - `user_id` (Foreign Key to Users)
     - `name` (Text)
+    - `description` (Text)
+
+3. **Group membership table** Table:
+    
+    - `id` (Primary Key)
+    - `group_id` (Foreign Key to groups)
+    - `user_id` (Foreign key to User)
+    - `role` (Text)
+    - 
+4. **Item** Table:
+    
+    - `id` (Primary Key)
+    - `name` (text)
+    - `details` (text)
     - `category` (Text)
     - `description` (Text)
-    - `value` (Numeric)
-    - `purchase_date` (Date)
-    - `location` (Text)
-    - `barcode` (Text, Unique)
-3. **Reminders** Table (maybe):
-    
+
+5. **Item_logs** Table:
+
     - `id` (Primary Key)
-    - `item_id` (Foreign Key to Items)
-    - `reminder_date` (Date)
-    - `message` (Text)
-4. **Barcode Logs** Table:
-    
+    - `item_id` (Foreign Key to Item)
+    - `quantities` (integer)
+    - `value` (integer)
+    - `barcode` (text)
+    - `purcharse date` (date)
+
+6. **Reminder** Table:
+
     - `id` (Primary Key)
+    - `item_id` (Foreign Key to Item)
+    - `reminder_date` (date)
+    - `message` (text)
+
+7. **Barcode_Logs** Table:
+
+    - `id` (Primary Key)
+    - `item_log_id` (Foreign Key to Item_logs)
+    - `scan_date` (timestamp)
+    - `action` (text)
+  
+8. **Item_lists** Table:
+
+    - `id` (Primary Key)
+    - `owner_id` (Foreign Key to User)
+    - `group_id` (Foreign Key to Groups)
+    - `list_name` (text)
+  
+9. **Item_list_Items** Table:
+
+    - `id` (Primary Key)
+    - `list_id` (Foreign Key to Item_lists)
     - `item_id` (Foreign Key to Items)
-    - `scan_date` (Timestamp)
-    - `action` (Text, e.g., "Checked In", "Checked Out")
 
 ### **Stack Focus**
 
@@ -80,46 +113,13 @@ The primary users are **homeowners, renters, and property managers** who want to
 - **Additional Sources**:
     
     - If integrating product lookup features, data will be fetched from APIs like **Barcode Lookup API** to retrieve product details based on the bardcodes.
-    - The database will be managed with **PostgreSQL** and preloaded with common household item categories for ease of use, like electro domestics, .
+    - The database will be managed with **PostgreSQL**.
     - Also maybe could add OpenCage geocoder API and Leaflet.js to create an interactive map, though I'll need to see if I can pull it off
 
-## **Database Schema**
-
-Here’s a possible schema design for PostgreSQL:
-
-1. **Users** Table:
-    
-    - `id` (Primary Key)
-    - `username` (Unique)
-    - `email` (Unique)
-    - `password_hash` (Encrypted)
-2. **Items** Table:
-    
-    - `id` (Primary Key)
-    - `user_id` (Foreign Key to Users)
-    - `name` (Text)
-    - `category` (Text)
-    - `description` (Text)
-    - `value` (Numeric)
-    - `purchase_date` (Date)
-    - `location` (Text)
-    - `barcode` (Text, Unique)
-3. **Reminders** Table (maybe):
-    
-    - `id` (Primary Key)
-    - `item_id` (Foreign Key to Items)
-    - `reminder_date` (Date)
-    - `message` (Text)
-4. **Barcode Logs** Table:
-    
-    - `id` (Primary Key)
-    - `item_id` (Foreign Key to Items)
-    - `scan_date` (Timestamp)
-    - `action` (Text, e.g., "Checked In", "Checked Out")
 
 ---
 
-### **API Issues**
+### **Possible API Issues**
 
 1. **Data Quality**:
     
@@ -136,6 +136,7 @@ Here’s a possible schema design for PostgreSQL:
     
     - Use a password hashing algorithm like bcrypt.
     - Ensure the app supports HTTPS to encrypt data during transmission.
+      
 2. **API Keys**:
     
     - Store API keys for Barcode Lookup securely in environment variables.
